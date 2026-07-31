@@ -58,3 +58,6 @@ dev-dist
 .dev.vars*
 
 .open-next
+
+# keep the checked-in template
+!.env.example

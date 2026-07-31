@@ -23,7 +23,21 @@ export function createQueryClient() {
 	});
 }
 
-export const queryClient = createQueryClient();
+let browserQueryClient: QueryClient | undefined;
+
+/**
+ * On the server every request gets its own client, so one visitor's cached data
+ * can never be served to another. In the browser the client is memoized so it
+ * survives re-renders.
+ */
+export function getQueryClient() {
+	if (typeof window === "undefined") {
+		return createQueryClient();
+	}
+
+	browserQueryClient ??= createQueryClient();
+	return browserQueryClient;
+}
 
 function getServerUrl(url: string) {
 	const normalized = url.endsWith("/") ? url.slice(0, -1) : url;
