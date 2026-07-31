@@ -29,6 +29,33 @@ const apiHandler = new OpenAPIHandler(appRouter, {
 	],
 });
 
+/**
+ * oRPC procedures return values, not responses, so anything that needs to set
+ * a header (Set-Cookie on admin login/logout) writes it to `context.resHeaders`
+ * and it is merged onto the way out here.
+ */
+function withContextHeaders(
+	response: Response | undefined,
+	resHeaders: Headers,
+) {
+	if (!response) {
+		return new Response("Not Found", { status: 404 });
+	}
+
+	if ([...resHeaders.keys()].length === 0) {
+		return response;
+	}
+
+	const merged = new Headers(response.headers);
+	resHeaders.forEach((value, key) => merged.append(key, value));
+
+	return new Response(response.body, {
+		status: response.status,
+		statusText: response.statusText,
+		headers: merged,
+	});
+}
+
 new Elysia()
 	.use(
 		cors({
@@ -39,11 +66,12 @@ new Elysia()
 	.all(
 		"/rpc*",
 		async (context) => {
+			const rpcContext = await createContext({ context });
 			const { response } = await rpcHandler.handle(context.request, {
 				prefix: "/rpc",
-				context: await createContext({ context }),
+				context: rpcContext,
 			});
-			return response ?? new Response("Not Found", { status: 404 });
+			return withContextHeaders(response, rpcContext.resHeaders);
 		},
 		{
 			parse: "none",
@@ -52,11 +80,12 @@ new Elysia()
 	.all(
 		"/api-reference*",
 		async (context) => {
+			const apiContext = await createContext({ context });
 			const { response } = await apiHandler.handle(context.request, {
 				prefix: "/api-reference",
-				context: await createContext({ context }),
+				context: apiContext,
 			});
-			return response ?? new Response("Not Found", { status: 404 });
+			return withContextHeaders(response, apiContext.resHeaders);
 		},
 		{
 			parse: "none",
