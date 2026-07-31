@@ -9,7 +9,8 @@ This project was created with [Better-T-Stack](https://github.com/AmanVarshney01
 - **oRPC** - End-to-end type-safe APIs with OpenAPI integration
 - **Bun** - Runtime environment
 - **Prisma** - TypeScript-first ORM
-- **SQLite/Turso** - Database engine
+- **PostgreSQL** - Database engine
+- **Next.js** - Full-stack React framework (PWA-enabled)
 - **Biome** - Linting and formatting
 - **Turborepo** - Optimized monorepo build system
 
@@ -23,12 +24,12 @@ bun install
 
 ## Database Setup
 
-This project uses SQLite with Prisma.
+This project uses PostgreSQL with Prisma.
 
-1. Start the local SQLite database (optional):
+1. Start the local PostgreSQL database (Docker required):
 
 ```bash
-bun run db:local
+bun run db:start
 ```
 
 2. Update your `.env` file in the `apps/server` directory with the appropriate connection details if needed.
@@ -45,7 +46,7 @@ Then, run the development server:
 bun run dev
 ```
 
-The API is running at [http://localhost:3000](http://localhost:3000).
+The API is running at [http://localhost:3000](http://localhost:3000) and the web app at [http://localhost:3001](http://localhost:3001).
 
 ## Git Hooks and Formatting
 
@@ -56,10 +57,13 @@ The API is running at [http://localhost:3000](http://localhost:3000).
 ```
 rifa-app/
 ├── apps/
-│   └── server/      # Backend API (Elysia, ORPC)
+│   ├── server/      # Backend API (Elysia, ORPC)
+│   └── web/         # Next.js PWA frontend
 ├── packages/
 │   ├── api/         # API layer / business logic
-│   └── db/          # Database schema & queries
+│   ├── db/          # Database schema & queries
+│   ├── env/         # Validated environment variables
+│   └── ui/          # Shared React component kit
 ```
 
 ## Available Scripts
@@ -67,10 +71,11 @@ rifa-app/
 - `bun run dev`: Start all applications in development mode
 - `bun run build`: Build all applications
 - `bun run dev:server`: Start only the server
+- `bun run dev:web`: Start only the web app
 - `bun run check-types`: Check TypeScript types across all apps
 - `bun run db:push`: Push schema changes to database
 - `bun run db:generate`: Generate database client/types
 - `bun run db:migrate`: Run database migrations
 - `bun run db:studio`: Open database studio UI
-- `bun run db:local`: Start the local SQLite database
+- `bun run db:start`: Start the local PostgreSQL container (`db:watch` foreground, `db:stop` stop, `db:down` remove)
 - `bun run check`: Run Biome formatting and linting
