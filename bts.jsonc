@@ -16,7 +16,7 @@
   "backend": "elysia",
   "runtime": "bun",
   "frontend": ["next"],
-  "addons": ["pwa", "biome", "lefthook", "turborepo"],
+  "addons": ["pwa", "biome", "lefthook", "turborepo", "skills"],
   "examples": [],
   "auth": "none",
   "payments": "none",

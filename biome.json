@@ -27,7 +27,9 @@
 			"!**/wrangler.jsonc",
 			"!**/.source",
 			"!**/convex/_generated",
-			"!**/public"
+			"!**/public",
+			"!**/.agents",
+			"!**/.claude"
 		]
 	},
 	"formatter": {
