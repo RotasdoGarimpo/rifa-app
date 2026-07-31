@@ -127,18 +127,21 @@ export async function createReservation(input: CreateReservationInput) {
 		});
 
 		if (claimed.count !== input.numbers.length) {
-			const lost = await tx.ticket.findMany({
-				where: {
-					raffleId: raffle.id,
-					number: { in: input.numbers },
-					reservationId: { not: created.id },
-				},
+			// Derive the losses from what we actually got rather than querying for
+			// "taken by someone else": a ticket sold outside a reservation has a
+			// NULL reservationId, which `{ not: id }` silently skips, and a number
+			// outside the raffle's range has no row at all. Both would report an
+			// empty list to the buyer.
+			const mine = await tx.ticket.findMany({
+				where: { reservationId: created.id },
 				select: { number: true },
-				orderBy: { number: "asc" },
 			});
+			const claimedNumbers = new Set(mine.map((ticket) => ticket.number));
 
 			// Rolls back the reservation row and any tickets we did claim.
-			throw new TicketsUnavailableError(lost.map((ticket) => ticket.number));
+			throw new TicketsUnavailableError(
+				input.numbers.filter((number) => !claimedNumbers.has(number)),
+			);
 		}
 
 		return tx.reservation.update({
