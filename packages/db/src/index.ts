@@ -10,7 +10,11 @@ export {
 	ReservationStatus,
 	TicketStatus,
 } from "../prisma/generated/enums";
-export type { Raffle, Reservation, Ticket } from "../prisma/generated/models";
+export type {
+	RaffleModel as Raffle,
+	ReservationModel as Reservation,
+	TicketModel as Ticket,
+} from "../prisma/generated/models";
 
 export function createPrismaClient() {
 	const adapter = new PrismaPg({
