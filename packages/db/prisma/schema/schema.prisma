@@ -8,3 +8,81 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+enum RaffleStatus {
+  DRAFT
+  OPEN
+  CLOSED
+  DRAWN
+}
+
+enum TicketStatus {
+  FREE
+  RESERVED
+  PAID
+}
+
+enum ReservationStatus {
+  PENDING
+  PAID
+  EXPIRED
+  CANCELLED
+}
+
+model Raffle {
+  id           String        @id @default(cuid())
+  slug         String        @unique
+  title        String
+  subtitle     String?
+  imageUrl     String?
+  /// Stored in cents so totals are exact. Format only at the edges.
+  priceCents   Int
+  totalTickets Int
+  drawDate     DateTime?
+  drawChannel  String        @default("Loteria Federal")
+  status       RaffleStatus  @default(OPEN)
+  featured     Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  tickets      Ticket[]
+  reservations Reservation[]
+
+  @@index([status, featured])
+}
+
+/// One row per number per raffle, materialized when the raffle is created.
+/// The @@unique below is what actually prevents selling a number twice.
+model Ticket {
+  id            String       @id @default(cuid())
+  raffleId      String
+  raffle        Raffle       @relation(fields: [raffleId], references: [id], onDelete: Cascade)
+  number        Int
+  status        TicketStatus @default(FREE)
+  reservationId String?
+  reservation   Reservation? @relation(fields: [reservationId], references: [id], onDelete: SetNull)
+
+  @@unique([raffleId, number])
+  @@index([raffleId, status])
+  @@index([reservationId])
+}
+
+model Reservation {
+  id        String            @id @default(cuid())
+  /// Human-facing code shown to the buyer, e.g. RF-2481.
+  code      String            @unique
+  /// Global arrival order, drives the admin's "Ordem de chegada" list.
+  sequence  Int               @unique @default(autoincrement())
+  raffleId  String
+  raffle    Raffle            @relation(fields: [raffleId], references: [id], onDelete: Cascade)
+  name      String
+  /// Digits only, no formatting.
+  phone     String
+  status    ReservationStatus @default(PENDING)
+  expiresAt DateTime
+  createdAt DateTime          @default(now())
+  paidAt    DateTime?
+  tickets   Ticket[]
+
+  @@index([raffleId, status])
+  @@index([status, expiresAt])
+}
