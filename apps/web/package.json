@@ -4,7 +4,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "next dev --port 3001",
-		"build": "next build",
+		"build": "next build && serwist build serwist.config.ts",
 		"check-types": "tsc --noEmit",
 		"start": "next start"
 	},
@@ -31,12 +31,17 @@
 	},
 	"devDependencies": {
 		"@rifa-app/config": "workspace:*",
+		"@serwist/cli": "^9.5.12",
+		"@serwist/next": "^9.5.12",
 		"@tailwindcss/postcss": "catalog:",
 		"@tanstack/react-query-devtools": "^5.101.4",
 		"@types/node": "^20.19.43",
 		"@types/react": "catalog:",
 		"@types/react-dom": "catalog:",
+		"esbuild": "^0.28.1",
+		"serwist": "^9.5.12",
 		"tailwindcss": "catalog:",
 		"typescript": "catalog:"
-	}
+	},
+	"type": "module"
 }
