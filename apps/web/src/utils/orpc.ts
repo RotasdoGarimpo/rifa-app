@@ -66,7 +66,7 @@ function getServerUrl(url: string) {
 		return `${origin}${normalized}`;
 	}
 
-	return `http://localhost:3000${normalized}`;
+	return `http://localhost:3333${normalized}`;
 }
 export const link = new RPCLink({
 	url: `${getServerUrl(env.NEXT_PUBLIC_SERVER_URL)}/rpc`,

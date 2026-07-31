@@ -46,7 +46,7 @@ Then, run the development server:
 bun run dev
 ```
 
-The API is running at [http://localhost:3000](http://localhost:3000) and the web app at [http://localhost:3001](http://localhost:3001).
+The API is running at [http://localhost:3333](http://localhost:3333) and the web app at [http://localhost:3000](http://localhost:3000).
 
 ## Git Hooks and Formatting
 

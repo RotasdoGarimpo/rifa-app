@@ -5,6 +5,7 @@ import { buttonVariants } from "@rifa-app/ui/components/button";
 import { Progress } from "@rifa-app/ui/components/progress";
 import { Tag } from "@rifa-app/ui/components/tag";
 import { useQuery } from "@tanstack/react-query";
+import Image from "next/image";
 import Link from "next/link";
 
 import { PrizeImage } from "@/components/prize-image";
@@ -55,7 +56,16 @@ export default function HomePage() {
 	return (
 		<Screen>
 			<header className="flex flex-none items-center justify-between px-[18px] pt-0.5 pb-2">
-				<span className="font-heading text-[19px]">Rifa da Viola</span>
+				<span className="flex items-center gap-1.5">
+					<Image
+						src="/logo.png"
+						alt=""
+						width={28}
+						height={28}
+						className="rounded-md"
+					/>
+					<span className="font-heading text-[19px]">Rifa da Viola</span>
+				</span>
 				<Link
 					href="/admin"
 					className={buttonVariants({ variant: "secondary", size: "sm" })}

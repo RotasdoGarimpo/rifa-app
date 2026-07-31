@@ -11,10 +11,10 @@ export default function manifest(): MetadataRoute.Manifest {
 		scope: "/",
 		display: "standalone",
 		orientation: "portrait",
-		// Matches the Organic ground so the splash screen does not flash white
+		// Matches the Rifaí ground so the splash screen does not flash white
 		// before the app paints.
-		background_color: "#f5ead8",
-		theme_color: "#c67139",
+		background_color: "#f6f7f9",
+		theme_color: "#446df6",
 		categories: ["shopping", "entertainment"],
 		icons: [
 			{

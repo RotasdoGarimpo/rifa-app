@@ -5,75 +5,80 @@
 @source "../**/*.{ts,tsx}";
 
 /*
- * Organic — warm, rounded, light-ground. Ported from the approved design.
+ * Rifaí — cool, rounded, light-ground. Ported from the approved design
+ * ("Rifa Organic v2"): the Organic shapes and type kept, the warm cream
+ * palette replaced with a neutral grey ground and a blue primary.
  *
  * shadcn's semantic names are kept (--background, --primary, …) so the
- * component recipes keep working, but they now resolve to Organic values. The
+ * component recipes keep working, but they now resolve to Rifaí values. The
  * tonal ramps are exposed under `brand-*` and `sage-*` rather than `accent-*`,
  * because shadcn already means "muted hover surface" by accent and the
- * collision would be a permanent trap.
+ * collision would be a permanent trap. `sage-*` is now emerald rather than
+ * sage green — the name is historical, the role (paid/success) is unchanged.
  *
- * There is no dark mode: the design specifies a single cream ground.
+ * There is no dark mode: the design specifies a single light ground.
  */
 
 :root {
-	--background: #f5ead8;
-	--foreground: #201e1d;
-	--card: #ebddc5;
-	--card-foreground: #201e1d;
-	--popover: #ebddc5;
-	--popover-foreground: #201e1d;
-	--primary: #c67139;
-	--primary-foreground: #fff2eb;
-	--secondary: #ebddc5;
-	--secondary-foreground: #474238;
-	--muted: #ebddc5;
-	--muted-foreground: #645c50;
-	--accent: #e1eecc;
-	--accent-foreground: #3d472b;
+	--background: #f6f7f9;
+	--foreground: #14161c;
+	--card: #ffffff;
+	--card-foreground: #14161c;
+	--popover: #ffffff;
+	--popover-foreground: #14161c;
+	--primary: #446df6;
+	--primary-foreground: #f2f5fe;
+	/* The design's surface is now lighter than its ground, so secondary and
+	   muted take neutral-200 to stay a step *down* from the page, as before. */
+	--secondary: #f1f2f5;
+	--secondary-foreground: #3d434e;
+	--muted: #f1f2f5;
+	--muted-foreground: #5b6270;
+	--accent: #d3f1e7;
+	--accent-foreground: #074d39;
 	--destructive: oklch(0.58 0.22 27);
-	--border: color-mix(in srgb, #201e1d 16%, transparent);
-	--input: color-mix(in srgb, #201e1d 16%, transparent);
-	--ring: #c67139;
+	--border: color-mix(in srgb, #1e222a 12%, transparent);
+	--input: color-mix(in srgb, #1e222a 12%, transparent);
+	--ring: #446df6;
 
-	/* Neutral ramp — warm sand, not grey. */
-	--neutral-100: #f9f4ed;
-	--neutral-200: #eee7db;
-	--neutral-300: #dcd3c4;
-	--neutral-400: #c0b6a5;
-	--neutral-500: #a19786;
-	--neutral-600: #82796a;
-	--neutral-700: #645c50;
-	--neutral-800: #474238;
-	--neutral-900: #2e2b25;
+	/* Neutral ramp — cool grey. */
+	--neutral-100: #fafafb;
+	--neutral-200: #f1f2f5;
+	--neutral-300: #e3e5ea;
+	--neutral-400: #c7cbd4;
+	--neutral-500: #a3a9b6;
+	--neutral-600: #7c8391;
+	--neutral-700: #5b6270;
+	--neutral-800: #3d434e;
+	--neutral-900: #1e222a;
 
-	/* Brand ramp — terracotta. The primary voice. */
-	--brand-100: #fff2eb;
-	--brand-200: #ffe1d0;
-	--brand-300: #ffc6a5;
-	--brand-400: #f6a06b;
-	--brand-500: #d67f48;
-	--brand-600: #b2622d;
-	--brand-700: #8c491a;
-	--brand-800: #643312;
-	--brand-900: #402310;
+	/* Brand ramp — blue. The primary voice. */
+	--brand-100: #f2f5fe;
+	--brand-200: #dee6fe;
+	--brand-300: #bccbfc;
+	--brand-400: #809df9;
+	--brand-500: #446df6;
+	--brand-600: #2e55d8;
+	--brand-700: #2342ac;
+	--brand-800: #1b3280;
+	--brand-900: #132455;
 
-	/* Sage ramp — the genuine second voice, used for paid/success states. */
-	--sage-100: #f0fae1;
-	--sage-200: #e1eecc;
-	--sage-300: #ccdbb2;
-	--sage-400: #aebf92;
-	--sage-500: #8fa073;
-	--sage-600: #728157;
-	--sage-700: #56633f;
-	--sage-800: #3d472b;
-	--sage-900: #272e1b;
+	/* Sage ramp — emerald, the genuine second voice, used for paid/success. */
+	--sage-100: #edfaf5;
+	--sage-200: #d3f1e7;
+	--sage-300: #a8e2ce;
+	--sage-400: #5fc6a5;
+	--sage-500: #12a177;
+	--sage-600: #0c8461;
+	--sage-700: #09684c;
+	--sage-800: #074d39;
+	--sage-900: #053426;
 
 	--radius: 1rem;
 
-	--shadow-organic-sm: 0 1px 2px color-mix(in srgb, #2e2b25 14%, transparent);
-	--shadow-organic-md: 0 3px 10px color-mix(in srgb, #2e2b25 16%, transparent);
-	--shadow-organic-lg: 0 12px 32px color-mix(in srgb, #2e2b25 22%, transparent);
+	--shadow-organic-sm: 0 1px 2px color-mix(in srgb, #1e222a 12%, transparent);
+	--shadow-organic-md: 0 4px 14px color-mix(in srgb, #1e222a 14%, transparent);
+	--shadow-organic-lg: 0 14px 34px color-mix(in srgb, #1e222a 18%, transparent);
 }
 
 @theme inline {

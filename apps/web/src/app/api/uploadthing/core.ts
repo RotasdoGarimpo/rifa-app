@@ -12,7 +12,7 @@ const f = createUploadthing();
  * growing a second way to validate a session — this handler runs in Next while
  * the cookie is issued by Elysia, so the two must agree exactly.
  *
- * Cookies ignore port, so on localhost the :3000 cookie reaches :3001 fine.
+ * Cookies ignore port, so on localhost the :3333 cookie reaches :3000 fine.
  * In production the two origins must share a parent domain, or this middleware
  * sees no cookie and every upload is rejected.
  */
