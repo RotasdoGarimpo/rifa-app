@@ -4,92 +4,82 @@
 @source "../../../apps/**/*.{ts,tsx}";
 @source "../**/*.{ts,tsx}";
 
-@custom-variant dark (&:is(.dark *));
+/*
+ * Organic — warm, rounded, light-ground. Ported from the approved design.
+ *
+ * shadcn's semantic names are kept (--background, --primary, …) so the
+ * component recipes keep working, but they now resolve to Organic values. The
+ * tonal ramps are exposed under `brand-*` and `sage-*` rather than `accent-*`,
+ * because shadcn already means "muted hover surface" by accent and the
+ * collision would be a permanent trap.
+ *
+ * There is no dark mode: the design specifies a single cream ground.
+ */
 
 :root {
-	--background: oklch(1 0 0);
-	--foreground: oklch(0.145 0 0);
-	--card: oklch(1 0 0);
-	--card-foreground: oklch(0.145 0 0);
-	--popover: oklch(1 0 0);
-	--popover-foreground: oklch(0.145 0 0);
-	--primary: oklch(0.205 0 0);
-	--primary-foreground: oklch(0.985 0 0);
-	--secondary: oklch(0.97 0 0);
-	--secondary-foreground: oklch(0.205 0 0);
-	--muted: oklch(0.97 0 0);
-	--muted-foreground: oklch(0.556 0 0);
-	--accent: oklch(0.97 0 0);
-	--accent-foreground: oklch(0.205 0 0);
+	--background: #f5ead8;
+	--foreground: #201e1d;
+	--card: #ebddc5;
+	--card-foreground: #201e1d;
+	--popover: #ebddc5;
+	--popover-foreground: #201e1d;
+	--primary: #c67139;
+	--primary-foreground: #fff2eb;
+	--secondary: #ebddc5;
+	--secondary-foreground: #474238;
+	--muted: #ebddc5;
+	--muted-foreground: #645c50;
+	--accent: #e1eecc;
+	--accent-foreground: #3d472b;
 	--destructive: oklch(0.58 0.22 27);
-	--border: oklch(0.922 0 0);
-	--input: oklch(0.922 0 0);
-	--ring: oklch(0.708 0 0);
-	--chart-1: oklch(0.809 0.105 251.813);
-	--chart-2: oklch(0.623 0.214 259.815);
-	--chart-3: oklch(0.546 0.245 262.881);
-	--chart-4: oklch(0.488 0.243 264.376);
-	--chart-5: oklch(0.424 0.199 265.638);
-	--radius: 0.625rem;
-	--sidebar: oklch(0.985 0 0);
-	--sidebar-foreground: oklch(0.145 0 0);
-	--sidebar-primary: oklch(0.205 0 0);
-	--sidebar-primary-foreground: oklch(0.985 0 0);
-	--sidebar-accent: oklch(0.97 0 0);
-	--sidebar-accent-foreground: oklch(0.205 0 0);
-	--sidebar-border: oklch(0.922 0 0);
-	--sidebar-ring: oklch(0.708 0 0);
-}
+	--border: color-mix(in srgb, #201e1d 16%, transparent);
+	--input: color-mix(in srgb, #201e1d 16%, transparent);
+	--ring: #c67139;
 
-.dark {
-	--background: oklch(0.145 0 0);
-	--foreground: oklch(0.985 0 0);
-	--card: oklch(0.205 0 0);
-	--card-foreground: oklch(0.985 0 0);
-	--popover: oklch(0.205 0 0);
-	--popover-foreground: oklch(0.985 0 0);
-	--primary: oklch(0.87 0 0);
-	--primary-foreground: oklch(0.205 0 0);
-	--secondary: oklch(0.269 0 0);
-	--secondary-foreground: oklch(0.985 0 0);
-	--muted: oklch(0.269 0 0);
-	--muted-foreground: oklch(0.708 0 0);
-	--accent: oklch(0.371 0 0);
-	--accent-foreground: oklch(0.985 0 0);
-	--destructive: oklch(0.704 0.191 22.216);
-	--border: oklch(1 0 0 / 10%);
-	--input: oklch(1 0 0 / 15%);
-	--ring: oklch(0.556 0 0);
-	--chart-1: oklch(0.809 0.105 251.813);
-	--chart-2: oklch(0.623 0.214 259.815);
-	--chart-3: oklch(0.546 0.245 262.881);
-	--chart-4: oklch(0.488 0.243 264.376);
-	--chart-5: oklch(0.424 0.199 265.638);
-	--sidebar: oklch(0.205 0 0);
-	--sidebar-foreground: oklch(0.985 0 0);
-	--sidebar-primary: oklch(0.488 0.243 264.376);
-	--sidebar-primary-foreground: oklch(0.985 0 0);
-	--sidebar-accent: oklch(0.269 0 0);
-	--sidebar-accent-foreground: oklch(0.985 0 0);
-	--sidebar-border: oklch(1 0 0 / 10%);
-	--sidebar-ring: oklch(0.556 0 0);
+	/* Neutral ramp — warm sand, not grey. */
+	--neutral-100: #f9f4ed;
+	--neutral-200: #eee7db;
+	--neutral-300: #dcd3c4;
+	--neutral-400: #c0b6a5;
+	--neutral-500: #a19786;
+	--neutral-600: #82796a;
+	--neutral-700: #645c50;
+	--neutral-800: #474238;
+	--neutral-900: #2e2b25;
+
+	/* Brand ramp — terracotta. The primary voice. */
+	--brand-100: #fff2eb;
+	--brand-200: #ffe1d0;
+	--brand-300: #ffc6a5;
+	--brand-400: #f6a06b;
+	--brand-500: #d67f48;
+	--brand-600: #b2622d;
+	--brand-700: #8c491a;
+	--brand-800: #643312;
+	--brand-900: #402310;
+
+	/* Sage ramp — the genuine second voice, used for paid/success states. */
+	--sage-100: #f0fae1;
+	--sage-200: #e1eecc;
+	--sage-300: #ccdbb2;
+	--sage-400: #aebf92;
+	--sage-500: #8fa073;
+	--sage-600: #728157;
+	--sage-700: #56633f;
+	--sage-800: #3d472b;
+	--sage-900: #272e1b;
+
+	--radius: 1rem;
+
+	--shadow-organic-sm: 0 1px 2px color-mix(in srgb, #2e2b25 14%, transparent);
+	--shadow-organic-md: 0 3px 10px color-mix(in srgb, #2e2b25 16%, transparent);
+	--shadow-organic-lg: 0 12px 32px color-mix(in srgb, #2e2b25 22%, transparent);
 }
 
 @theme inline {
-	--font-sans: "Inter Variable", sans-serif;
-	--color-sidebar-ring: var(--sidebar-ring);
-	--color-sidebar-border: var(--sidebar-border);
-	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-	--color-sidebar-accent: var(--sidebar-accent);
-	--color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-	--color-sidebar-primary: var(--sidebar-primary);
-	--color-sidebar-foreground: var(--sidebar-foreground);
-	--color-sidebar: var(--sidebar);
-	--color-chart-5: var(--chart-5);
-	--color-chart-4: var(--chart-4);
-	--color-chart-3: var(--chart-3);
-	--color-chart-2: var(--chart-2);
-	--color-chart-1: var(--chart-1);
+	--font-sans: var(--font-figtree), system-ui, sans-serif;
+	--font-heading: var(--font-caprasimo), var(--font-figtree), serif;
+
 	--color-ring: var(--ring);
 	--color-input: var(--input);
 	--color-border: var(--border);
@@ -108,23 +98,85 @@
 	--color-card: var(--card);
 	--color-foreground: var(--foreground);
 	--color-background: var(--background);
-	--radius-sm: calc(var(--radius) - 4px);
-	--radius-md: calc(var(--radius) - 2px);
-	--radius-lg: var(--radius);
-	--radius-xl: calc(var(--radius) + 4px);
-	--radius-2xl: calc(var(--radius) + 8px);
-	--radius-3xl: calc(var(--radius) + 12px);
-	--radius-4xl: calc(var(--radius) + 16px);
+
+	--color-neutral-100: var(--neutral-100);
+	--color-neutral-200: var(--neutral-200);
+	--color-neutral-300: var(--neutral-300);
+	--color-neutral-400: var(--neutral-400);
+	--color-neutral-500: var(--neutral-500);
+	--color-neutral-600: var(--neutral-600);
+	--color-neutral-700: var(--neutral-700);
+	--color-neutral-800: var(--neutral-800);
+	--color-neutral-900: var(--neutral-900);
+
+	--color-brand-100: var(--brand-100);
+	--color-brand-200: var(--brand-200);
+	--color-brand-300: var(--brand-300);
+	--color-brand-400: var(--brand-400);
+	--color-brand-500: var(--brand-500);
+	--color-brand-600: var(--brand-600);
+	--color-brand-700: var(--brand-700);
+	--color-brand-800: var(--brand-800);
+	--color-brand-900: var(--brand-900);
+
+	--color-sage-100: var(--sage-100);
+	--color-sage-200: var(--sage-200);
+	--color-sage-300: var(--sage-300);
+	--color-sage-400: var(--sage-400);
+	--color-sage-500: var(--sage-500);
+	--color-sage-600: var(--sage-600);
+	--color-sage-700: var(--sage-700);
+	--color-sage-800: var(--sage-800);
+	--color-sage-900: var(--sage-900);
+
+	/* 8 / 16 / 28 from the design, plus a pill for buttons, tags and inputs. */
+	--radius-sm: 0.5rem;
+	--radius-md: 1rem;
+	--radius-lg: 1.75rem;
+	--radius-xl: 2rem;
+	--radius-pill: 999px;
+
+	--shadow-sm: var(--shadow-organic-sm);
+	--shadow-md: var(--shadow-organic-md);
+	--shadow-lg: var(--shadow-organic-lg);
 }
 
 @layer base {
 	* {
 		@apply border-border outline-ring/50;
 	}
-	body {
-		@apply font-sans bg-background text-foreground;
-	}
 	html {
 		@apply font-sans;
+	}
+	body {
+		@apply bg-background text-foreground font-sans antialiased;
+	}
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		@apply font-heading;
+		line-height: 1.12;
+		letter-spacing: -0.015em;
+	}
+	::selection {
+		background: color-mix(in srgb, var(--primary) 30%, transparent);
+	}
+}
+
+@layer utilities {
+	/*
+	 * Every content photograph goes through this. It desaturates and lifts the
+	 * image so it sits back into the warm ground instead of on top of it.
+	 */
+	.washed {
+		filter: saturate(0.6) contrast(0.85) brightness(1.1) opacity(0.94);
+	}
+
+	/* Number cells and money need columns that line up. */
+	.tabular {
+		font-variant-numeric: tabular-nums;
 	}
 }

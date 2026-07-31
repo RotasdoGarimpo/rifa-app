@@ -1,23 +1,26 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Caprasimo, Figtree } from "next/font/google";
 
 import "../index.css";
-import Header from "@/components/header";
 import Providers from "@/components/providers";
 
-const geistSans = Geist({
-	variable: "--font-geist-sans",
+const figtree = Figtree({
+	variable: "--font-figtree",
 	subsets: ["latin"],
+	weight: ["400", "600", "700"],
+	display: "swap",
 });
 
-const geistMono = Geist_Mono({
-	variable: "--font-geist-mono",
+const caprasimo = Caprasimo({
+	variable: "--font-caprasimo",
 	subsets: ["latin"],
+	weight: "400",
+	display: "swap",
 });
 
 export const metadata: Metadata = {
-	title: "rifa-app",
-	description: "rifa-app",
+	title: "Rifa da Viola",
+	description: "Garanta seus números e concorra pela Loteria Federal.",
 };
 
 export default function RootLayout({
@@ -26,16 +29,9 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" suppressHydrationWarning>
-			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-			>
-				<Providers>
-					<div className="grid h-svh grid-rows-[auto_1fr]">
-						<Header />
-						{children}
-					</div>
-				</Providers>
+		<html lang="pt-BR">
+			<body className={`${figtree.variable} ${caprasimo.variable}`}>
+				<Providers>{children}</Providers>
 			</body>
 		</html>
 	);

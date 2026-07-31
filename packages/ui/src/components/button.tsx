@@ -2,32 +2,41 @@ import { Button as ButtonPrimitive } from "@base-ui/react/button";
 import { cn } from "@rifa-app/ui/lib/utils";
 import { cva, type VariantProps } from "class-variance-authority";
 
+/**
+ * Organic buttons: pill-shaped, set in the display face, with generous padding.
+ * States come from the brand ramp rather than opacity tricks.
+ */
 const buttonVariants = cva(
-	"group/button inline-flex shrink-0 select-none items-center justify-center whitespace-nowrap rounded-none border border-transparent bg-clip-padding font-medium text-xs outline-none transition-all focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring/50 active:not-aria-[haspopup]:translate-y-px disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-1 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+	"inline-flex shrink-0 cursor-pointer select-none items-center justify-center gap-2 whitespace-nowrap rounded-pill border border-transparent font-heading leading-tight outline-none transition-[background-color,color,box-shadow,transform] focus-visible:outline-2 focus-visible:outline-ring focus-visible:outline-offset-2 active:scale-[0.98] disabled:pointer-events-none disabled:opacity-45 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
 	{
 		variants: {
 			variant: {
-				default: "bg-primary text-primary-foreground hover:bg-primary/80",
-				outline:
-					"border-border bg-background hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:border-input dark:bg-input/30 dark:hover:bg-input/50",
+				default:
+					"bg-primary text-primary-foreground hover:bg-brand-600 active:bg-brand-700",
 				secondary:
-					"bg-secondary text-secondary-foreground hover:bg-[color-mix(in_oklch,var(--secondary),var(--foreground)_5%)] aria-expanded:bg-secondary aria-expanded:text-secondary-foreground",
-				ghost:
-					"hover:bg-muted hover:text-foreground aria-expanded:bg-muted aria-expanded:text-foreground dark:hover:bg-muted/50",
+					"border-border bg-transparent text-foreground hover:bg-foreground/[0.07] active:bg-foreground/[0.14]",
+				surface:
+					"bg-card text-foreground hover:bg-neutral-300 active:bg-neutral-400",
+				sage: "bg-sage-600 text-sage-100 hover:bg-sage-700 active:bg-sage-800",
+				ghost: "text-primary hover:bg-primary/10 active:bg-primary/[0.18]",
 				destructive:
-					"bg-destructive/10 text-destructive hover:bg-destructive/20 focus-visible:border-destructive/40 focus-visible:ring-destructive/20 dark:bg-destructive/20 dark:focus-visible:ring-destructive/40 dark:hover:bg-destructive/30",
+					"bg-destructive/10 text-destructive hover:bg-destructive/20 active:bg-destructive/30",
 				link: "text-primary underline-offset-4 hover:underline",
 			},
 			size: {
-				default:
-					"h-8 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-				xs: "h-6 gap-1 rounded-none px-2 text-xs has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3",
-				sm: "h-7 gap-1 rounded-none px-2.5 has-data-[icon=inline-end]:pr-1.5 has-data-[icon=inline-start]:pl-1.5 [&_svg:not([class*='size-'])]:size-3.5",
-				lg: "h-9 gap-1.5 px-2.5 has-data-[icon=inline-end]:pr-2 has-data-[icon=inline-start]:pl-2",
-				icon: "size-8",
-				"icon-xs": "size-6 rounded-none [&_svg:not([class*='size-'])]:size-3",
-				"icon-sm": "size-7 rounded-none",
-				"icon-lg": "size-9",
+				default: "h-10 px-4 text-sm",
+				// xs / icon-xs are kept for the inherited chat components
+				// (input-group, attachment), which are not part of this design.
+				xs: "h-6 gap-1 px-2 text-xs [&_svg:not([class*='size-'])]:size-3",
+				sm: "h-8 px-3 text-xs",
+				lg: "h-13 px-6 text-base",
+				icon: "size-10",
+				"icon-xs": "size-6 [&_svg:not([class*='size-'])]:size-3",
+				"icon-sm": "size-8 [&_svg:not([class*='size-'])]:size-3.5",
+				"icon-lg": "size-12 [&_svg:not([class*='size-'])]:size-5",
+			},
+			block: {
+				true: "w-full",
 			},
 		},
 		defaultVariants: {
@@ -41,12 +50,13 @@ function Button({
 	className,
 	variant = "default",
 	size = "default",
+	block,
 	...props
 }: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
 	return (
 		<ButtonPrimitive
 			data-slot="button"
-			className={cn(buttonVariants({ variant, size, className }))}
+			className={cn(buttonVariants({ variant, size, block, className }))}
 			{...props}
 		/>
 	);

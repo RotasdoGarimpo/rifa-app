@@ -7,23 +7,14 @@ import { useState } from "react";
 
 import { getQueryClient } from "@/utils/orpc";
 
-import { ThemeProvider } from "./theme-provider";
-
 export default function Providers({ children }: { children: React.ReactNode }) {
 	const [queryClient] = useState(getQueryClient);
 
 	return (
-		<ThemeProvider
-			attribute="class"
-			defaultTheme="system"
-			enableSystem
-			disableTransitionOnChange
-		>
-			<QueryClientProvider client={queryClient}>
-				{children}
-				<ReactQueryDevtools />
-			</QueryClientProvider>
-			<Toaster richColors />
-		</ThemeProvider>
+		<QueryClientProvider client={queryClient}>
+			{children}
+			<Toaster richColors position="top-center" />
+			<ReactQueryDevtools />
+		</QueryClientProvider>
 	);
 }
