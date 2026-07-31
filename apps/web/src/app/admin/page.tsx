@@ -1,21 +1,28 @@
-import Link from "next/link";
+"use client";
 
+import { useQuery } from "@tanstack/react-query";
+
+import { AdminDashboard } from "@/components/admin-dashboard";
+import { PinPad } from "@/components/pin-pad";
 import { Screen } from "@/components/screen";
+import { orpc } from "@/utils/orpc";
 
-// Placeholder entry point. Phase 5 replaces this with the PIN keypad and the
-// server-verified session; Phase 6 adds the reservations list behind it.
+/**
+ * The keypad-or-dashboard switch is a convenience, not the security boundary —
+ * every admin procedure is a protectedProcedure and answers 401 on its own.
+ */
 export default function AdminPage() {
-	return (
-		<Screen>
-			<div className="flex flex-1 flex-col items-center justify-center gap-3 px-8 text-center">
-				<h4 className="text-[22px]">Área da organização</h4>
-				<p className="m-0 text-[12.5px] text-neutral-700">
-					Em breve: acompanhe as reservas e confirme os pagamentos.
-				</p>
-				<Link href="/" className="mt-2 text-primary text-sm underline">
-					Voltar ao início
-				</Link>
-			</div>
-		</Screen>
-	);
+	const { data, isPending } = useQuery(orpc.auth.me.queryOptions());
+
+	if (isPending) {
+		return (
+			<Screen>
+				<div className="flex flex-1 items-center justify-center">
+					<div className="size-12 animate-pulse rounded-pill bg-card" />
+				</div>
+			</Screen>
+		);
+	}
+
+	return data?.authenticated ? <AdminDashboard /> : <PinPad />;
 }

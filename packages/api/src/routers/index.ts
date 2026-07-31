@@ -1,6 +1,7 @@
 import type { RouterClient } from "@orpc/server";
 
 import { publicProcedure } from "../index";
+import { adminRouter } from "./admin";
 import { authRouter } from "./auth";
 import { raffleRouter } from "./raffle";
 import { reservationRouter } from "./reservation";
@@ -9,6 +10,7 @@ export const appRouter = {
 	healthCheck: publicProcedure.handler(() => {
 		return "OK";
 	}),
+	admin: adminRouter,
 	auth: authRouter,
 	raffle: raffleRouter,
 	reservation: reservationRouter,

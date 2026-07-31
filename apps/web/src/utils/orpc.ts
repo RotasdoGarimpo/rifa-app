@@ -70,6 +70,10 @@ function getServerUrl(url: string) {
 }
 export const link = new RPCLink({
 	url: `${getServerUrl(env.NEXT_PUBLIC_SERVER_URL)}/rpc`,
+	// Carries the admin session cookie across to the API origin. Without this
+	// fetch omits it and every protected procedure answers 401.
+	fetch: (request, init) =>
+		globalThis.fetch(request, { ...init, credentials: "include" }),
 });
 
 export const client: AppRouterClient = createORPCClient(link);

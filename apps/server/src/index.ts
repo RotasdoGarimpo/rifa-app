@@ -61,6 +61,9 @@ new Elysia()
 		cors({
 			origin: env.CORS_ORIGIN,
 			methods: ["GET", "POST", "OPTIONS"],
+			// The admin session rides in a cookie, and the web app is a different
+			// origin (:3001 -> :3000), so the browser drops it without this.
+			credentials: true,
 		}),
 	)
 	.all(
