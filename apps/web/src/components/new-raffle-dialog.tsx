@@ -16,6 +16,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { ImageUpload } from "@/components/image-upload";
 import { orpc } from "@/utils/orpc";
 
 export function NewRaffleDialog({ onCreated }: { onCreated: () => void }) {
@@ -24,6 +25,7 @@ export function NewRaffleDialog({ onCreated }: { onCreated: () => void }) {
 	const [price, setPrice] = useState("10");
 	const [total, setTotal] = useState("200");
 	const [drawDate, setDrawDate] = useState("");
+	const [imageUrl, setImageUrl] = useState<string | null>(null);
 
 	const createRaffle = useMutation(
 		orpc.admin.createRaffle.mutationOptions({
@@ -34,6 +36,7 @@ export function NewRaffleDialog({ onCreated }: { onCreated: () => void }) {
 				setPrice("10");
 				setTotal("200");
 				setDrawDate("");
+				setImageUrl(null);
 				onCreated();
 			},
 			onError: (error) => {
@@ -77,9 +80,12 @@ export function NewRaffleDialog({ onCreated }: { onCreated: () => void }) {
 							priceCents: Math.round(priceNumber * 100),
 							totalTickets: totalNumber,
 							drawDate: drawDate || undefined,
+							imageUrl: imageUrl ?? undefined,
 						});
 					}}
 				>
+					<ImageUpload value={imageUrl} onChange={setImageUrl} />
+
 					<div className="flex flex-col gap-1.5">
 						<Label
 							htmlFor="raffle-title"

@@ -1,5 +1,3 @@
-import { env } from "@rifa-app/env/server";
-
 /**
  * Admin sessions.
  *
@@ -7,7 +5,24 @@ import { env } from "@rifa-app/env/server";
  * on `context.session`, never on how it was produced — so replacing the PIN
  * with Better Auth later means rewriting `verifySessionToken` and the context
  * builder, and nothing else.
+ *
+ * Deliberately imports nothing: UploadThing's file router runs inside apps/web
+ * and needs to verify the very same cookie apps/server issued. Depending on
+ * @rifa-app/env/server here would drag DATABASE_URL and every other API secret
+ * into the Next process just to check a signature.
  */
+
+function sessionSecret() {
+	const secret = process.env.SESSION_SECRET;
+
+	if (!secret) {
+		throw new Error(
+			"SESSION_SECRET is not set. Both apps/server and apps/web need it: one signs the admin cookie, the other verifies it.",
+		);
+	}
+
+	return secret;
+}
 
 export const SESSION_COOKIE = "rifa_admin";
 const SESSION_TTL_MS = 12 * 60 * 60 * 1000;
@@ -21,7 +36,7 @@ function base64UrlEncode(bytes: Uint8Array) {
 async function sign(payload: string) {
 	const key = await crypto.subtle.importKey(
 		"raw",
-		new TextEncoder().encode(env.SESSION_SECRET),
+		new TextEncoder().encode(sessionSecret()),
 		{ name: "HMAC", hash: "SHA-256" },
 		false,
 		["sign"],
@@ -109,7 +124,7 @@ export function buildSessionCookie(token: string, maxAgeSeconds: number) {
 		`Max-Age=${maxAgeSeconds}`,
 	];
 
-	if (env.NODE_ENV === "production") {
+	if (process.env.NODE_ENV === "production") {
 		attributes.push("Secure");
 	}
 
