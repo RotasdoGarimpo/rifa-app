@@ -31,6 +31,8 @@
 	"scripts": {
 		"dev": "turbo run dev",
 		"build": "turbo run build",
+		"start:web": "bun run -F web run start",
+		"start:server": "bun run -F server start",
 		"check-types": "turbo run check-types",
 		"dev:server": "turbo run dev -F server",
 		"dev:web": "turbo run dev -F web",
