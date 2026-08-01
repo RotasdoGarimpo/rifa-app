@@ -20,6 +20,7 @@ export function PinPad() {
 	const login = useMutation(
 		orpc.auth.login.mutationOptions({
 			onSuccess: () => {
+				console.log("loginned");
 				setPin("");
 				queryClient.invalidateQueries({ queryKey: orpc.auth.key() });
 			},
