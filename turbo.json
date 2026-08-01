@@ -14,7 +14,8 @@
 				"NEXT_PUBLIC_SERVER_URL",
 				"SKIP_ENV_VALIDATION",
 				"SESSION_SECRET",
-				"UPLOADTHING_TOKEN"
+				"UPLOADTHING_TOKEN",
+				"ADMIN_PIN_HASH"
 			]
 		},
 		"lint": {
