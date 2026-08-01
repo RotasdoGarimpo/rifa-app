@@ -7,7 +7,7 @@ import { z } from "zod";
 config({
 	path: path.resolve(
 		path.dirname(fileURLToPath(import.meta.url)),
-		"../../../.env",
+		"../../.env",
 	),
 });
 
