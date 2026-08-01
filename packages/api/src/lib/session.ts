@@ -50,7 +50,11 @@ async function sign(payload: string) {
 	return base64UrlEncode(new Uint8Array(signature));
 }
 
-/** Length-independent comparison, so a mismatch leaks nothing via timing. */
+/**
+ * Constant-time comparison for equal-length strings (HMAC signatures). The
+ * early return means it does leak whether the lengths match — fine for a
+ * fixed-width digest, not for a secret. Use `secureCompare` for those.
+ */
 export function timingSafeEqual(a: string, b: string) {
 	if (a.length !== b.length) return false;
 
@@ -60,6 +64,24 @@ export function timingSafeEqual(a: string, b: string) {
 	}
 
 	return diff === 0;
+}
+
+/**
+ * Compares two secrets of any length without leaking either length: both sides
+ * are hashed first, so the comparison always runs over 32 fixed bytes.
+ */
+export async function secureCompare(a: string, b: string) {
+	const [digestA, digestB] = await Promise.all([digest(a), digest(b)]);
+
+	return timingSafeEqual(digestA, digestB);
+}
+
+async function digest(value: string) {
+	return base64UrlEncode(
+		new Uint8Array(
+			await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value)),
+		),
+	);
 }
 
 export async function createSessionToken(): Promise<string> {

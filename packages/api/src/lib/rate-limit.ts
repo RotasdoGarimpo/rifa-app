@@ -1,7 +1,8 @@
 /**
- * In-memory attempt limiter for the admin PIN.
+ * In-memory attempt limiter for the admin login.
  *
- * A 6-digit PIN is 1,000,000 combinations — trivially brute-forced without this.
+ * A single username/password pair is the only credential in the app, so without
+ * this an attacker could grind the password list unthrottled.
  * In-memory is adequate for a single-instance deployment; if the server is
  * ever scaled horizontally this needs to move to Postgres or Redis, because
  * per-process counters would let an attacker get N times the attempts.

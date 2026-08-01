@@ -2,6 +2,7 @@ import { env } from "@rifa-app/env/server";
 import * as z from "zod";
 
 import { protectedProcedure, publicProcedure } from "../index";
+import { verifyPassword } from "../lib/password";
 import {
 	checkRateLimit,
 	clearAttempts,
@@ -11,7 +12,7 @@ import {
 	buildSessionCookie,
 	clearedSessionCookie,
 	createSessionToken,
-	timingSafeEqual,
+	secureCompare,
 } from "../lib/session";
 
 const SESSION_MAX_AGE = 12 * 60 * 60;
@@ -19,11 +20,17 @@ const SESSION_MAX_AGE = 12 * 60 * 60;
 const login = publicProcedure
 	.route({ method: "POST", path: "/auth/login" })
 	.input(
-		z.object({ pin: z.string().regex(/^\d{6}$/, { error: "PIN inválido." }) }),
+		z.object({
+			username: z.string().min(1, { error: "Informe o usuário." }).max(64),
+			password: z.string().min(1, { error: "Informe a senha." }).max(256),
+		}),
 	)
 	.output(z.object({ ok: z.literal(true) }))
 	.errors({
-		INVALID_PIN: { status: 401, message: "PIN incorreto." },
+		INVALID_CREDENTIALS: {
+			status: 401,
+			message: "Usuário ou senha incorretos.",
+		},
 		TOO_MANY_ATTEMPTS: {
 			status: 429,
 			message: "Muitas tentativas. Tente mais tarde.",
@@ -39,11 +46,17 @@ const login = publicProcedure
 			});
 		}
 
-		const correct = timingSafeEqual(input.pin, env.ADMIN_PIN);
+		// The argon2 verification runs even when the username is already wrong:
+		// short-circuiting would answer a bad username in a millisecond and a good
+		// one in ~100ms, which is enough to enumerate it.
+		const [usernameOk, passwordOk] = await Promise.all([
+			secureCompare(input.username, env.ADMIN_USERNAME),
+			verifyPassword(input.password, env.ADMIN_PASSWORD_HASH),
+		]);
 
-		if (!correct) {
+		if (!usernameOk || !passwordOk) {
 			recordFailure(context.clientIp);
-			throw errors.INVALID_PIN();
+			throw errors.INVALID_CREDENTIALS();
 		}
 
 		clearAttempts(context.clientIp);
@@ -63,7 +76,7 @@ const logout = publicProcedure
 		return { ok: true as const };
 	});
 
-/** Used by the admin layout to decide whether to show the keypad. */
+/** Used by the admin layout to decide whether to show the login form. */
 const me = publicProcedure
 	.route({ method: "GET", path: "/auth/me" })
 	.output(z.object({ authenticated: z.boolean() }))
