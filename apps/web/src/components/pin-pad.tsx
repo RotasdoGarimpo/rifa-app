@@ -48,10 +48,10 @@ export function PinPad() {
 			return;
 		}
 
-		const next = (pin + key).slice(0, 4);
+		const next = (pin + key).slice(0, 6);
 		setPin(next);
 
-		if (next.length === 4) {
+		if (next.length === 6) {
 			login.mutate({ pin: next });
 		}
 	}
@@ -70,7 +70,7 @@ export function PinPad() {
 				</span>
 				<h4 className="mt-4 mb-1 text-[22px]">Área da organização</h4>
 				<p className="m-0 text-[12.5px] text-neutral-700">
-					Digite o PIN de 4 dígitos
+					Digite o PIN de 6 dígitos
 				</p>
 
 				<div
@@ -79,7 +79,7 @@ export function PinPad() {
 						animation: shake ? "pin-shake 0.4s ease-in-out" : undefined,
 					}}
 				>
-					{[0, 1, 2, 3].map((index) => (
+					{[0, 1, 2, 3, 4, 5].map((index) => (
 						<i
 							key={index}
 							className={`size-3.5 rounded-pill transition-colors ${
@@ -106,7 +106,7 @@ export function PinPad() {
 				</div>
 
 				<p className="mt-5 text-[12px] text-neutral-600">
-					{login.isPending ? "Verificando…" : "Demo: o PIN é 1234"}
+					{login.isPending ? "Verificando…" : "Demo: o PIN é 457313"}
 				</p>
 			</div>
 

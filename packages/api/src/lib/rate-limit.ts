@@ -1,7 +1,7 @@
 /**
  * In-memory attempt limiter for the admin PIN.
  *
- * A 4-digit PIN is 10,000 combinations — trivially brute-forced without this.
+ * A 6-digit PIN is 1,000,000 combinations — trivially brute-forced without this.
  * In-memory is adequate for a single-instance deployment; if the server is
  * ever scaled horizontally this needs to move to Postgres or Redis, because
  * per-process counters would let an attacker get N times the attempts.

@@ -1,6 +1,15 @@
-import "dotenv/config";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { createEnv } from "@t3-oss/env-core";
+import { config } from "dotenv";
 import { z } from "zod";
+
+config({
+	path: path.resolve(
+		path.dirname(fileURLToPath(import.meta.url)),
+		"../../../.env",
+	),
+});
 
 export const env = createEnv({
 	server: {
@@ -12,24 +21,10 @@ export const env = createEnv({
 		ADMIN_WHATSAPP: z.string().regex(/^\d{10,13}$/),
 		/** Shown to buyers when the organizer chases payment. */
 		PIX_KEY: z.string().min(1),
-		/**
-		 * Argon2/bcrypt hash of the 4-digit admin PIN — never the PIN itself.
-		 *
-		 * The format check is not paranoia: .env performs `$VAR` expansion, so an
-		 * unescaped `$argon2id$v=19$...` silently loads as `=19=65536,...` and
-		 * only fails much later as an opaque "UnsupportedAlgorithm" at login.
-		 * Escape every `$` as `\$` in .env.
-		 */
-		ADMIN_PIN_HASH: z
+		/** Plaintext 6-digit admin PIN, compared with a timing-safe check. */
+		ADMIN_PIN: z
 			.string()
-			.min(1)
-			.refine(
-				(value) => value.startsWith("$argon2") || value.startsWith("$2"),
-				{
-					error:
-						'ADMIN_PIN_HASH is not a valid hash. .env expands "$" — escape each one as "\\$".',
-				},
-			),
+			.regex(/^\d{6}$/, { error: "ADMIN_PIN must be exactly 6 digits." }),
 		/** HMAC key for admin session cookies. Rotating it logs everyone out. */
 		SESSION_SECRET: z.string().min(32),
 		NODE_ENV: z

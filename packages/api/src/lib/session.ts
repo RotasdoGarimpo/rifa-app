@@ -51,7 +51,7 @@ async function sign(payload: string) {
 }
 
 /** Length-independent comparison, so a mismatch leaks nothing via timing. */
-function timingSafeEqual(a: string, b: string) {
+export function timingSafeEqual(a: string, b: string) {
 	if (a.length !== b.length) return false;
 
 	let diff = 0;

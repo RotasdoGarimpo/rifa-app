@@ -1,22 +1,24 @@
 {
 	"$schema": "https://turbo.build/schema.json",
 	"ui": "tui",
-	"globalEnv": ["NODE_ENV"],
+	"globalEnv": [
+		"NODE_ENV",
+		"DATABASE_URL",
+		"CORS_ORIGIN",
+		"PORT",
+		"NEXT_PUBLIC_SERVER_URL",
+		"SKIP_ENV_VALIDATION",
+		"SESSION_SECRET",
+		"UPLOADTHING_TOKEN",
+		"ADMIN_WHATSAPP",
+		"PIX_KEY",
+		"ADMIN_PIN"
+	],
+	"globalDependencies": [".env"],
 	"tasks": {
 		"build": {
 			"dependsOn": ["^build"],
-			"inputs": ["$TURBO_DEFAULT$", ".env*"],
-			"outputs": ["dist/**", ".next/**", "!.next/cache/**"],
-			"env": [
-				"DATABASE_URL",
-				"CORS_ORIGIN",
-				"PORT",
-				"NEXT_PUBLIC_SERVER_URL",
-				"SKIP_ENV_VALIDATION",
-				"SESSION_SECRET",
-				"UPLOADTHING_TOKEN",
-				"ADMIN_PIN_HASH"
-			]
+			"outputs": ["dist/**", ".next/**", "!.next/cache/**"]
 		},
 		"lint": {
 			"dependsOn": ["^lint"]

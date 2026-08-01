@@ -1,5 +1,15 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { createEnv } from "@t3-oss/env-nextjs";
+import { config } from "dotenv";
 import { z } from "zod";
+
+config({
+	path: path.resolve(
+		path.dirname(fileURLToPath(import.meta.url)),
+		"../../../.env",
+	),
+});
 
 export const env = createEnv({
 	server: {

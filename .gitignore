@@ -55,3 +55,4 @@ coverage
 tmp
 temp
 .env*
+!.env.example

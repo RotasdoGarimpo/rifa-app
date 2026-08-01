@@ -11,6 +11,7 @@ import {
 	buildSessionCookie,
 	clearedSessionCookie,
 	createSessionToken,
+	timingSafeEqual,
 } from "../lib/session";
 
 const SESSION_MAX_AGE = 12 * 60 * 60;
@@ -18,7 +19,7 @@ const SESSION_MAX_AGE = 12 * 60 * 60;
 const login = publicProcedure
 	.route({ method: "POST", path: "/auth/login" })
 	.input(
-		z.object({ pin: z.string().regex(/^\d{4}$/, { error: "PIN inválido." }) }),
+		z.object({ pin: z.string().regex(/^\d{6}$/, { error: "PIN inválido." }) }),
 	)
 	.output(z.object({ ok: z.literal(true) }))
 	.errors({
@@ -38,7 +39,7 @@ const login = publicProcedure
 			});
 		}
 
-		const correct = await Bun.password.verify(input.pin, env.ADMIN_PIN_HASH);
+		const correct = timingSafeEqual(input.pin, env.ADMIN_PIN);
 
 		if (!correct) {
 			recordFailure(context.clientIp);
