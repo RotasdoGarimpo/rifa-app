@@ -107,7 +107,7 @@ export function PinPad() {
 				</div>
 
 				<p className="mt-5 text-[12px] text-neutral-600">
-					{login.isPending ? "Verificando…" : "Demo: o PIN é 457313"}
+					{login.isPending ? "Verificando…" : "Digite o PIN"}
 				</p>
 			</div>
 
