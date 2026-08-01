@@ -1,10 +1,13 @@
 import path from "node:path";
+import { fileURLToPath } from "bun";
+import { config } from "dotenv";
+import { defineConfig } from "prisma/config";
 
-import dotenv from "dotenv";
-import { defineConfig, env } from "prisma/config";
-
-dotenv.config({
-	path: "../../.env",
+config({
+	path: path.resolve(
+		path.dirname(fileURLToPath(import.meta.url)),
+		"../../.env",
+	),
 });
 
 export default defineConfig({
@@ -13,6 +16,6 @@ export default defineConfig({
 		path: path.join("prisma", "migrations"),
 	},
 	datasource: {
-		url: env("DATABASE_URL"),
+		url: process.env.DATABASE_URL,
 	},
 });
