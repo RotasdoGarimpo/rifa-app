@@ -1,10 +1,7 @@
+import "dotenv/config";
 import { createEnv } from "@t3-oss/env-core";
-import { config } from "dotenv";
 import { z } from "zod";
 
-config({
-	path: "../../.env",
-});
 export const env = createEnv({
 	server: {
 		DATABASE_URL: z.string().min(1),

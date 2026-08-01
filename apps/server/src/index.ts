@@ -47,7 +47,9 @@ function withContextHeaders(
 	}
 
 	const merged = new Headers(response.headers);
-	resHeaders.forEach((value, key) => merged.append(key, value));
+	resHeaders.forEach((value, key) => {
+		merged.append(key, value);
+	});
 
 	return new Response(response.body, {
 		status: response.status,
