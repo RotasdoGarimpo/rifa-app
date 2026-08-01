@@ -116,15 +116,20 @@ export function readSessionCookie(cookieHeader: string | null | undefined) {
 }
 
 export function buildSessionCookie(token: string, maxAgeSeconds: number) {
+	const isProd = process.env.NODE_ENV === "production";
 	const attributes = [
 		`${SESSION_COOKIE}=${token}`,
 		"Path=/",
 		"HttpOnly",
-		"SameSite=Lax",
+		// apps/web and apps/server are different origins in production, so the
+		// cookie must be SameSite=None (which browsers only accept alongside
+		// Secure) or it's silently withheld from every cross-site fetch after
+		// login, leaving the admin stuck on the PIN screen.
+		isProd ? "SameSite=None" : "SameSite=Lax",
 		`Max-Age=${maxAgeSeconds}`,
 	];
 
-	if (process.env.NODE_ENV === "production") {
+	if (isProd) {
 		attributes.push("Secure");
 	}
 
