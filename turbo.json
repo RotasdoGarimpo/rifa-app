@@ -12,7 +12,8 @@
 				"CORS_ORIGIN",
 				"PORT",
 				"NEXT_PUBLIC_SERVER_URL",
-				"SKIP_ENV_VALIDATION"
+				"SKIP_ENV_VALIDATION",
+				"SESSION_SECRET"
 			]
 		},
 		"lint": {
