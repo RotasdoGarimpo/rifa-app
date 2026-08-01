@@ -13,7 +13,8 @@
 				"PORT",
 				"NEXT_PUBLIC_SERVER_URL",
 				"SKIP_ENV_VALIDATION",
-				"SESSION_SECRET"
+				"SESSION_SECRET",
+				"UPLOADTHING_TOKEN"
 			]
 		},
 		"lint": {
