@@ -1,6 +1,6 @@
 "use client";
 
-import { isDefinedError } from "@orpc/client";
+import { authClient } from "@rifa-app/auth/client";
 import { Button } from "@rifa-app/ui/components/button";
 import { Input } from "@rifa-app/ui/components/input";
 import { Label } from "@rifa-app/ui/components/label";
@@ -19,28 +19,31 @@ export function LoginForm() {
 	const [shake, setShake] = useState(false);
 	const queryClient = useQueryClient();
 
-	const login = useMutation(
-		orpc.auth.login.mutationOptions({
-			onSuccess: () => {
+	const login = useMutation({
+		mutationFn: async (credentials: { username: string; password: string }) => {
+			const { error } = await authClient.signIn.username(credentials);
+			// Better Auth reports failures in the payload rather than throwing, so
+			// rethrow to keep useMutation's success/error split meaningful.
+			if (error) throw error;
+		},
+		onSuccess: () => {
+			setPassword("");
+			queryClient.invalidateQueries({ queryKey: orpc.auth.key() });
+		},
+		onError: (error: { status?: number }) => {
+			setShake(true);
+			setTimeout(() => {
+				setShake(false);
 				setPassword("");
-				queryClient.invalidateQueries({ queryKey: orpc.auth.key() });
-			},
-			onError: (error) => {
-				setShake(true);
-				setTimeout(() => {
-					setShake(false);
-					setPassword("");
-				}, 400);
+			}, 400);
 
-				if (isDefinedError(error) && error.code === "TOO_MANY_ATTEMPTS") {
-					const minutes = Math.ceil(error.data.retryAfterSeconds / 60);
-					toast.error(`Muitas tentativas. Tente em ${minutes} min.`);
-					return;
-				}
-				toast.error("Usuário ou senha incorretos.");
-			},
-		}),
-	);
+			if (error.status === 429) {
+				toast.error("Muitas tentativas. Tente mais tarde.");
+				return;
+			}
+			toast.error("Usuário ou senha incorretos.");
+		},
+	});
 
 	function submit() {
 		if (login.isPending) return;

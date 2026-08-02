@@ -1,6 +1,7 @@
 "use client";
 
 import { formatMoney, formatPhone, padNumber } from "@rifa-app/api/lib/format";
+import { authClient } from "@rifa-app/auth/client";
 import { Button, buttonVariants } from "@rifa-app/ui/components/button";
 import { Input } from "@rifa-app/ui/components/input";
 import { Tag } from "@rifa-app/ui/components/tag";
@@ -70,12 +71,11 @@ export function AdminDashboard() {
 		}),
 	);
 
-	const logout = useMutation(
-		orpc.auth.logout.mutationOptions({
-			onSuccess: () =>
-				queryClient.invalidateQueries({ queryKey: orpc.auth.key() }),
-		}),
-	);
+	const logout = useMutation({
+		mutationFn: () => authClient.signOut(),
+		onSuccess: () =>
+			queryClient.invalidateQueries({ queryKey: orpc.auth.key() }),
+	});
 
 	const exportCsv = useMutation(
 		orpc.admin.exportCsv.mutationOptions({
@@ -96,7 +96,7 @@ export function AdminDashboard() {
 		<Screen>
 			<header className="flex flex-none items-center justify-between px-[18px] pt-0.5">
 				<span className="font-heading text-[18px]">Reservas</span>
-				<Button variant="ghost" size="sm" onClick={() => logout.mutate({})}>
+				<Button variant="ghost" size="sm" onClick={() => logout.mutate()}>
 					Sair
 				</Button>
 			</header>

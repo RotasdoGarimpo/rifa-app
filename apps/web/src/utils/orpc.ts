@@ -69,9 +69,9 @@ function getServerUrl(url: string) {
 	return `http://localhost:3333${normalized}`;
 }
 export const link = new RPCLink({
+	// This app's own origin: next.config.ts rewrites /rpc through to apps/server,
+	// which is what keeps the admin session cookie first-party.
 	url: `${getServerUrl(env.NEXT_PUBLIC_SERVER_URL)}/rpc`,
-	// Carries the admin session cookie across to the API origin. Without this
-	// fetch omits it and every protected procedure answers 401.
 	fetch: (request, init) =>
 		globalThis.fetch(request, { ...init, credentials: "include" }),
 });

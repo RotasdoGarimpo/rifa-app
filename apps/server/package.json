@@ -8,7 +8,8 @@
 		"compile": "bun build --compile --minify --sourcemap --bytecode ./src/index.ts --outfile server",
 		"dev": "bun run --hot src/index.ts",
 		"start": "bun run dist/index.mjs",
-		"seed": "bun run src/seed.ts"
+		"seed": "bun run src/seed.ts",
+		"seed:admin": "bun run src/seed-admin.ts"
 	},
 	"dependencies": {
 		"@elysiajs/cors": "^1.4.2",
@@ -16,9 +17,11 @@
 		"@orpc/server": "catalog:",
 		"@orpc/zod": "catalog:",
 		"@rifa-app/api": "workspace:*",
+		"@rifa-app/auth": "workspace:*",
 		"@rifa-app/db": "workspace:*",
 		"@rifa-app/env": "workspace:*",
 		"@sinclair/typebox": "^0.34.52",
+		"better-auth": "catalog:",
 		"dotenv": "catalog:",
 		"elysia": "catalog:",
 		"zod": "catalog:"

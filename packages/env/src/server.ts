@@ -12,20 +12,14 @@ export const env = createEnv({
 		ADMIN_WHATSAPP: z.string().regex(/^\d{10,13}$/),
 		/** Shown to buyers when the organizer chases payment. */
 		PIX_KEY: z.string().min(1),
-		/** Admin login name. Compared with a timing-safe check. */
-		ADMIN_USERNAME: z.string().min(1),
+		/** Signs Better Auth session cookies. Rotating it logs everyone out. */
+		BETTER_AUTH_SECRET: z.string().min(32),
 		/**
-		 * Argon2id hash of the admin password — never the password itself.
-		 * Mint one with the rotation one-liner in apps/server/.env, which escapes
-		 * the `$` separators Bun would otherwise expand as variable references.
-		 * The prefix check below is what catches a hash mangled by that expansion.
+		 * The origin the *browser* uses to reach auth — which is the web app's own
+		 * origin, not this server's, because apps/web proxies /api/auth through a
+		 * Next rewrite. Better Auth validates the Origin header against it.
 		 */
-		ADMIN_PASSWORD_HASH: z.string().startsWith("$argon2", {
-			error:
-				"ADMIN_PASSWORD_HASH must be an argon2 hash, not a plaintext password.",
-		}),
-		/** HMAC key for admin session cookies. Rotating it logs everyone out. */
-		SESSION_SECRET: z.string().min(32),
+		BETTER_AUTH_URL: z.url(),
 		NODE_ENV: z
 			.enum(["development", "production", "test"])
 			.default("development"),

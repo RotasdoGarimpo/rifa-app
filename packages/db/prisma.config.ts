@@ -6,7 +6,9 @@ config({
 });
 
 export default defineConfig({
-	schema: "prisma/schema/schema.prisma",
+	// The directory, not a single file: the domain models live in schema.prisma
+	// and Better Auth's tables in auth.prisma.
+	schema: "prisma/schema",
 	migrations: {
 		path: "prisma/migrations",
 	},

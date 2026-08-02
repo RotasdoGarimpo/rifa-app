@@ -9,17 +9,24 @@ export const env = createEnv({
 		 */
 		UPLOADTHING_TOKEN: z.string().min(1).optional(),
 		/**
-		 * Same value as apps/server: that process signs the admin cookie, this one
-		 * verifies it before accepting an upload.
+		 * Absolute origin of apps/server. Only ever used server-side: as the
+		 * destination of the /rpc and /api/auth rewrites in next.config.ts, and by
+		 * the UploadThing handler to validate a session. The browser never sees it
+		 * — that is the whole point of the proxy.
 		 */
-		SESSION_SECRET: z.string().min(32),
+		SERVER_ORIGIN: z.url(),
 	},
 	client: {
+		/**
+		 * The web app's *own* origin. Both the oRPC client and the Better Auth
+		 * client target it, and the rewrites forward to SERVER_ORIGIN from there,
+		 * which keeps the session cookie first-party.
+		 */
 		NEXT_PUBLIC_SERVER_URL: z.url(),
 	},
 	runtimeEnv: {
 		UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN,
-		SESSION_SECRET: process.env.SESSION_SECRET,
+		SERVER_ORIGIN: process.env.SERVER_ORIGIN,
 		NEXT_PUBLIC_SERVER_URL: process.env.NEXT_PUBLIC_SERVER_URL,
 	},
 	skipValidation: !!process.env.SKIP_ENV_VALIDATION,

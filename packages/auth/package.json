@@ -1,0 +1,24 @@
+{
+	"name": "@rifa-app/auth",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"exports": {
+		"./server": "./src/server.ts",
+		"./client": "./src/client.ts"
+	},
+	"dependencies": {
+		"@rifa-app/db": "workspace:*",
+		"@rifa-app/env": "workspace:*",
+		"better-auth": "catalog:"
+	},
+	"devDependencies": {
+		"@rifa-app/config": "workspace:*",
+		"@types/bun": "catalog:",
+		"react": "catalog:",
+		"typescript": "catalog:"
+	},
+	"scripts": {
+		"check-types": "tsc --noEmit"
+	}
+}

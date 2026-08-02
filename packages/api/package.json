@@ -17,6 +17,7 @@
 		"@orpc/openapi": "catalog:",
 		"@orpc/server": "catalog:",
 		"@orpc/zod": "catalog:",
+		"@rifa-app/auth": "workspace:*",
 		"@rifa-app/db": "workspace:*",
 		"@rifa-app/env": "workspace:*",
 		"dotenv": "catalog:",
